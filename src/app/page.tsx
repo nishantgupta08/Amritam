@@ -9,6 +9,8 @@ const HeartScene = dynamic(() => import("./components/HeartScene"), {
 });
 
 export default function Home() {
+  const [doctorImageError, setDoctorImageError] = useState(false);
+  
   return (
     <main className="relative min-h-screen overflow-hidden">
       {/* Navigation Header */}
@@ -54,13 +56,15 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-16 overflow-hidden">
+      <section className="relative min-h-screen flex items-center pt-8 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            className="absolute inset-0 bg-cover bg-no-repeat"
             style={{
               backgroundImage: 'url(/hero_bg.png)',
+              backgroundPosition: 'center top',
+              backgroundPositionY: '0px',
             }}
           ></div>
         </div>
@@ -71,40 +75,42 @@ export default function Home() {
             {/* Left Side - Text Content */}
             <div className="space-y-8">
               {/* Main Heading */}
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-tight tracking-tight">
-                <span className="text-gray-900">Advanced Cardiac Care</span>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight tracking-tight">
+                <span className="text-gray-900">Advanced</span>
+                <br className="hidden sm:block" />
+                <span className="text-gray-900">Cardiac Care</span>
                 <br className="hidden sm:block" />
                 <span className="bg-gradient-to-r from-blue-700 via-blue-600 to-blue-800 bg-clip-text text-transparent">You Can Trust</span>
               </h1>
 
               {/* Description */}
-              <p className="text-lg sm:text-xl text-gray-800 max-w-xl leading-relaxed font-semibold">
+              <p className="text-base sm:text-lg text-gray-800 max-w-xl leading-relaxed font-semibold">
                 Multispecialty cardiac expertise powered by advanced technology and compassionate care for every patient.
               </p>
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <button className="group px-8 py-4 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white font-bold rounded-xl shadow-[0_8px_20px_rgba(59,130,246,0.4)] hover:shadow-[0_12px_30px_rgba(59,130,246,0.6)] transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 text-base sm:text-lg border-2 border-white/20">
+                <button className="group px-6 py-3 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white font-bold rounded-xl shadow-[0_8px_20px_rgba(59,130,246,0.4)] hover:shadow-[0_12px_30px_rgba(59,130,246,0.6)] transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-base border-2 border-white/20">
                   <span className="drop-shadow-sm">Book Cardiology Consultation</span>
-                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300 drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300 drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                   </svg>
                 </button>
-                <button className="group px-8 py-4 bg-white/95 backdrop-blur-sm text-blue-600 font-bold rounded-xl border-[3px] border-blue-400 hover:bg-white hover:border-blue-500 hover:shadow-[0_8px_20px_rgba(59,130,246,0.3)] transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 shadow-lg text-base sm:text-lg">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button className="group px-6 py-3 bg-white/95 backdrop-blur-sm text-blue-600 font-bold rounded-xl border-[3px] border-blue-400 hover:bg-white hover:border-blue-500 hover:shadow-[0_8px_20px_rgba(59,130,246,0.3)] transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 shadow-lg text-sm sm:text-base">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                   </svg>
                   <span>Get Expert Second Opinion</span>
-                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                   </svg>
                 </button>
               </div>
 
               {/* Trust Indicators */}
-              <div className="flex items-center gap-2 text-sm pt-4">
-                <div className="p-1.5 bg-green-500/20 rounded-lg backdrop-blur-sm border border-green-400/30">
-                  <svg className="w-5 h-5 text-green-600 drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="flex items-center gap-2 text-xs pt-4">
+                <div className="p-1 bg-green-500/20 rounded-lg backdrop-blur-sm border border-green-400/30">
+                  <svg className="w-4 h-4 text-green-600 drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
@@ -115,15 +121,15 @@ export default function Home() {
             {/* Right Side - Heart Image */}
             <div className="relative flex-shrink-0 w-full lg:w-auto flex flex-col items-center justify-center gap-0.5">
               {/* Tagline with pink heart icon */}
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full border-2 border-white/30 shadow-lg backdrop-blur-sm">
-                <svg className="w-5 h-5 text-white drop-shadow-sm" fill="currentColor" viewBox="0 0 24 24">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full border-2 border-white/30 shadow-lg backdrop-blur-sm">
+                <svg className="w-4 h-4 text-white drop-shadow-sm" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                 </svg>
-                <span className="text-sm sm:text-base text-white font-bold drop-shadow-md">Because Every Heartbeat Matters</span>
+                <span className="text-xs sm:text-sm text-white font-bold drop-shadow-md">Because Every Heartbeat Matters</span>
               </div>
               
               {/* Heart Image */}
-              <div className="relative w-full sm:w-96 h-96 sm:h-96 lg:w-[500px] lg:h-[500px] xl:w-[600px] xl:h-[600px] flex items-center justify-center">
+              <div className="relative w-full sm:w-96 h-96 sm:h-96 lg:w-[480px] lg:h-[480px] xl:w-[600px] xl:h-[600px] flex items-center justify-center">
                 <div className="relative w-full h-full">
                   {/* Central Heart Image */}
                   <div className="relative z-10 w-full h-full flex items-center justify-center">
@@ -136,57 +142,102 @@ export default function Home() {
           
           {/* Credibility Bar - Full Width */}
           <div className="w-full mt-8 lg:mt-12">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {/* Card 1 - NABH/JCI with Blue-Teal gradient */}
-              <div className="group flex flex-col sm:flex-row items-center gap-3 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl border-2 border-blue-200/50 shadow-lg hover:shadow-xl hover:border-blue-300 p-4 sm:p-5 transition-all duration-300 hover:-translate-y-1">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 via-blue-600 to-cyan-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg ring-2 ring-blue-400/30 group-hover:scale-110 transition-transform">
-                  <svg className="w-7 h-7 sm:w-8 sm:h-8 text-white drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                  </svg>
-                </div>
-                <div className="text-center sm:text-left">
-                  <p className="text-sm sm:text-base font-extrabold text-blue-900">NABH / JCI</p>
-                  <p className="text-xs sm:text-sm font-semibold text-blue-700">Certified</p>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Main Doctor Profile Card - Comprehensive Design */}
+              <div className="lg:col-span-2 group bg-white rounded-3xl border-2 border-gray-100 shadow-xl hover:shadow-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1">
+                <div className="flex flex-col md:flex-row">
+                  {/* Left Side - Doctor Photo */}
+                  <div className="relative md:w-2/5 bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-6 md:p-8">
+                    <div className="w-full max-w-56 h-auto aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
+                      {!doctorImageError ? (
+                        <Image 
+                          src="/pankaj_goyal.png" 
+                          alt="Dr. Pankaj Goyal - Senior Cardiologist" 
+                          width={224} 
+                          height={298}
+                          className="w-full h-full object-cover"
+                          onError={() => setDoctorImageError(true)}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-200">
+                          <svg className="w-16 h-16 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          </svg>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {/* Right Side - Doctor Info & Stats */}
+                  <div className="md:w-3/5 p-6 md:p-8 flex flex-col justify-between">
+                    {/* Doctor Name & Designation */}
+                    <div className="mb-6">
+                      <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Dr. Pankaj Goyal</h3>
+                      <p className="text-base md:text-lg text-blue-700 font-semibold mb-1">MBBS, MD, DM (Gold Medalist)</p>
+                      <p className="text-sm md:text-base text-gray-600 font-medium">Senior Consultant Cardiologist</p>
+                      <p className="text-sm text-blue-600 font-semibold mt-2">Director - Amritam Heart Care</p>
+                    </div>
+                    
+                    {/* Stats Grid */}
+                    <div className="grid grid-cols-2 gap-4 mb-6">
+                      {/* Rating */}
+                      <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-xl p-4 border border-yellow-200">
+                        <div className="flex items-center gap-2 mb-2">
+                          <svg className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                          </svg>
+                          <span className="text-2xl font-bold text-yellow-900">4.9</span>
+                        </div>
+                        <p className="text-xs text-yellow-700 font-semibold">Rating (Google)</p>
+                      </div>
+                      
+                      {/* Experience */}
+                      <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200">
+                        <div className="flex items-center gap-2 mb-2">
+                          <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                          </svg>
+                          <span className="text-2xl font-bold text-purple-900">25+</span>
+                        </div>
+                        <p className="text-xs text-purple-700 font-semibold">Years Experience</p>
+                      </div>
+                      
+                      {/* Patients Treated */}
+                      <div className="bg-gradient-to-br from-pink-50 to-rose-50 rounded-xl p-4 border border-pink-200">
+                        <div className="flex items-center gap-2 mb-2">
+                          <svg className="w-5 h-5 text-pink-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                          </svg>
+                          <span className="text-2xl font-bold text-pink-900">1500+</span>
+                        </div>
+                        <p className="text-xs text-pink-700 font-semibold">Patients Treated</p>
+                      </div>
+                      
+                      {/* Hospital Rating */}
+                      <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-4 border border-blue-200">
+                        <div className="flex items-center gap-2 mb-2">
+                          <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                          </svg>
+                          <span className="text-2xl font-bold text-blue-900">NABH</span>
+                        </div>
+                        <p className="text-xs text-blue-700 font-semibold">Certified</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               
-              {/* Card 2 - 25+ Years with Purple-Pink gradient */}
-              <div className="group flex flex-col sm:flex-row items-center gap-3 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl border-2 border-purple-200/50 shadow-lg hover:shadow-xl hover:border-purple-300 p-4 sm:p-5 transition-all duration-300 hover:-translate-y-1">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-purple-500 via-purple-600 to-pink-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg ring-2 ring-purple-400/30 group-hover:scale-110 transition-transform">
-                  <svg className="w-7 h-7 sm:w-8 sm:h-8 text-white drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                </div>
-                <div className="text-center sm:text-left">
-                  <p className="text-sm sm:text-base font-extrabold text-purple-900">25+ Years</p>
-                  <p className="text-xs sm:text-sm font-semibold text-purple-700">Experience</p>
-                </div>
-              </div>
-              
-              {/* Card 3 - 100k+ Happy Patients with Red-Pink gradient */}
-              <div className="group flex flex-col sm:flex-row items-center gap-3 bg-gradient-to-br from-red-50 to-rose-50 rounded-2xl border-2 border-red-200/50 shadow-lg hover:shadow-xl hover:border-red-300 p-4 sm:p-5 transition-all duration-300 hover:-translate-y-1">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-red-500 via-rose-500 to-pink-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg ring-2 ring-red-400/30 group-hover:scale-110 transition-transform">
-                  <svg className="w-7 h-7 sm:w-8 sm:h-8 text-white drop-shadow-sm" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                  </svg>
-                </div>
-                <div className="text-center sm:text-left">
-                  <p className="text-sm sm:text-base font-extrabold text-red-900">100k+ Happy</p>
-                  <p className="text-xs sm:text-sm font-semibold text-red-700">Patients</p>
-                </div>
-              </div>
-              
-              {/* Card 4 - 24/7 Emergency with Green-Emerald gradient */}
-              <div className="group flex flex-col sm:flex-row items-center gap-3 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl border-2 border-green-200/50 shadow-lg hover:shadow-xl hover:border-green-300 p-4 sm:p-5 transition-all duration-300 hover:-translate-y-1">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-green-500 via-emerald-500 to-teal-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg ring-2 ring-green-400/30 group-hover:scale-110 transition-transform">
-                  <svg className="w-7 h-7 sm:w-8 sm:h-8 text-white drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {/* Emergency Care Card */}
+              <div className="group bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl border-2 border-green-200 shadow-xl hover:shadow-2xl p-6 md:p-8 transition-all duration-300 hover:-translate-y-1 flex flex-col items-center justify-center text-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-green-500 via-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg ring-4 ring-green-400/20 group-hover:scale-110 transition-transform">
+                  <svg className="w-10 h-10 text-white drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                   </svg>
                 </div>
-                <div className="text-center sm:text-left">
-                  <p className="text-sm sm:text-base font-extrabold text-green-900">24/7 Emergency</p>
-                  <p className="text-xs sm:text-sm font-semibold text-green-700">Cardiac Care</p>
-                </div>
+                <h3 className="text-2xl md:text-3xl font-bold text-green-900 mb-2">24/7 Emergency</h3>
+                <p className="text-base md:text-lg font-semibold text-green-700 mb-4">Cardiac Care</p>
+                <p className="text-sm text-green-600">Always available for urgent cardiac emergencies</p>
               </div>
             </div>
           </div>
