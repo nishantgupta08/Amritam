@@ -1,0 +1,1 @@
+self.__REACT_LOADABLE_MANIFEST="{\"app/page.tsx -> ./components/HeartScene\":{\"id\":\"app/page.tsx -> ./components/HeartScene\",\"files\":[\"static/chunks/_app-pages-browser_src_app_components_HeartScene_tsx.js\"]}}"
