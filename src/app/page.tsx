@@ -1,15 +1,86 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 
 const HeartScene = dynamic(() => import("./components/HeartScene"), {
   ssr: false,
 });
 
+// Component to fetch YouTube video title and description
+function YouTubeVideoTitle({ videoId, defaultTitle }: { videoId: string; defaultTitle: string }) {
+  const [title, setTitle] = useState(defaultTitle);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTitle = async () => {
+      try {
+        // Using oEmbed API (no API key required)
+        const response = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`);
+        if (response.ok) {
+          const data = await response.json();
+          setTitle(data.title);
+        }
+      } catch (error) {
+        console.error(`Error fetching title for video ${videoId}:`, error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTitle();
+  }, [videoId]);
+
+  return <>{loading ? defaultTitle : title}</>;
+}
+
+// Component to fetch YouTube video description
+function YouTubeVideoDescription({ videoId, defaultDescription }: { videoId: string; defaultDescription: string }) {
+  const [description, setDescription] = useState(defaultDescription);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDescription = async () => {
+      try {
+        // Fetch from our API route (server-side, more secure)
+        const response = await fetch(`/api/youtube?videoId=${videoId}`);
+        const data = await response.json();
+        
+        if (data && data.description) {
+          // Clean up the description - remove extra whitespace and newlines
+          let cleanDesc = data.description.trim();
+          
+          // Remove common YouTube description patterns
+          cleanDesc = cleanDesc.replace(/Subscribe.*$/i, '');
+          cleanDesc = cleanDesc.replace(/Follow us.*$/i, '');
+          cleanDesc = cleanDesc.replace(/Like.*share.*subscribe/gi, '');
+          
+          // Truncate description to first 150 characters for display
+          const truncatedDesc = cleanDesc.length > 150 
+            ? cleanDesc.substring(0, 150).trim() + '...' 
+            : cleanDesc.trim();
+          
+          if (truncatedDesc && truncatedDesc.length > 10) {
+            setDescription(truncatedDesc);
+          }
+        }
+      } catch (error) {
+        console.error(`Error fetching description for video ${videoId}:`, error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDescription();
+  }, [videoId]);
+
+  return <>{description}</>;
+}
+
 export default function Home() {
   const [doctorImageError, setDoctorImageError] = useState(false);
+  const [selectedBlog, setSelectedBlog] = useState<string | null>(null);
   
   return (
     <main className="relative min-h-screen overflow-hidden">
@@ -162,12 +233,12 @@ export default function Home() {
                         <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-200">
                           <svg className="w-16 h-16 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                          </svg>
-                        </div>
+                  </svg>
+                </div>
                       )}
-                    </div>
-                  </div>
-                  
+                </div>
+              </div>
+              
                   {/* Right Side - Doctor Info & Stats */}
                   <div className="md:w-3/5 p-6 md:p-8 flex flex-col justify-between">
                     {/* Doctor Name & Designation */}
@@ -185,11 +256,11 @@ export default function Home() {
                         <div className="flex items-center gap-2 mb-2">
                           <svg className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                          </svg>
+                  </svg>
                           <span className="text-2xl font-bold text-yellow-900">4.9</span>
-                        </div>
+                </div>
                         <p className="text-xs text-yellow-700 font-semibold">Rating (Google)</p>
-                      </div>
+                </div>
                       
                       {/* Experience */}
                       <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200">
@@ -200,16 +271,16 @@ export default function Home() {
                           <span className="text-2xl font-bold text-purple-900">25+</span>
                         </div>
                         <p className="text-xs text-purple-700 font-semibold">Years Experience</p>
-                      </div>
-                      
+              </div>
+              
                       {/* Patients Treated */}
                       <div className="bg-gradient-to-br from-pink-50 to-rose-50 rounded-xl p-4 border border-pink-200">
                         <div className="flex items-center gap-2 mb-2">
                           <svg className="w-5 h-5 text-pink-600" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                          </svg>
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                  </svg>
                           <span className="text-2xl font-bold text-pink-900">1500+</span>
-                        </div>
+                </div>
                         <p className="text-xs text-pink-700 font-semibold">Patients Treated</p>
                       </div>
                       
@@ -364,483 +435,329 @@ export default function Home() {
       {/* MAA YOJANA Empanelment Section */}
       <section className="relative py-12 sm:py-16 bg-gradient-to-br from-blue-50 via-white to-pink-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* Left Section - Text Content */}
-            <div className="space-y-6">
-              <div>
+          {/* Main Announcement */}
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-3 px-6 py-3 bg-blue-600 rounded-full mb-6 shadow-lg">
+              <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+              <span className="text-white font-bold text-lg">मुख्यमंत्री आयुष्मान आरोग्य योजना</span>
+            </div>
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-4">
                   <span className="text-blue-600">Empanelled with </span>
                   <span className="text-pink-600">MAA YOJANA</span>
                   <br />
                   <span className="text-blue-600">for Cashless Treatment</span>
                 </h2>
-              </div>
-              
-              <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
-                Maa Yojana provides cashless treatment for eligible families at Maa Yojana hospitals in Jaipur, including Amritam Heart Care Hospital. Our integrated multi-specialty services include cardiology, neurology, and urology, ensuring ease of access and comprehensive care. Complex surgeries are included, and we provide caring services with sophisticated medicine. The list of empaneled hospitals is continuously updated, guaranteeing prompt treatment and financial aid.
-              </p>
-              
-              <button className="px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center gap-2">
-                <span>Read More</span>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Right Section - Informational Card */}
-            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
-              {/* Follow Us Header */}
-              <div className="bg-gradient-to-r from-blue-600 to-pink-600 px-6 py-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-white font-bold text-lg">Follow Us</h3>
-                  <div className="flex items-center gap-3">
-                    <a href="#" className="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors">
-                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                      </svg>
-                    </a>
-                    <a href="#" className="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors">
-                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                      </svg>
-                    </a>
-                    <a href="#" className="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors">
-                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                      </svg>
-                    </a>
-                    <a href="#" className="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors">
-                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              {/* Main Content */}
-              <div className="p-6 space-y-6">
-                {/* Hospital Branding */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-bold">
-                      <span className="text-blue-600">Amritam Heart Care Hospital</span>
-                      <span className="text-pink-600"> Is Now Empanelled With MAA-YOJANA</span>
-                    </h3>
-                  </div>
-                  <p className="text-sm text-gray-700 font-medium">
+            <p className="text-base sm:text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
                     आयुष्मान योजना के तहत हृदय सम्बन्धी समस्याओ के लिए संपर्क करें
                   </p>
-                  
-                  {/* MAA YOJANA Logo Placeholder */}
-                  <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                    <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
-                      <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-600 font-semibold">मुख्यमंत्री आयुष्मान आरोग्य योजना</p>
-                      <p className="text-sm font-bold text-blue-600">MAA-YOJANA</p>
-                    </div>
-                  </div>
                 </div>
 
-                {/* Doctor Profile */}
-                <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
-                  <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <svg className="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          {/* Services & Contact Card */}
+          <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border-2 border-blue-100">
+            <div className="grid md:grid-cols-2 gap-0">
+              {/* Left Side - Services */}
+              <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 md:p-8">
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                  <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-gray-900">Dr. Pankaj Goyal</h4>
-                    <p className="text-xs text-gray-600">MBBS, MD, DM (Gold Medalist)</p>
-                    <p className="text-xs text-gray-600">Sr. Consultant Cardiologist</p>
-                    <p className="text-xs text-blue-600 font-semibold">Director - Amritam Heart Care</p>
-                  </div>
-                </div>
-
-                {/* Services Offered */}
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-3">Services Offered</h4>
-                  <div className="grid grid-cols-2 gap-2">
+                  Services Offered
+                </h3>
+                <div className="space-y-3">
                     {['Angiography', 'Pacemaker / ICD / CRT', 'CCU / EP Study', 'Angioplasty', 'Ventilators & ABG', 'Well Trained Staff'].map((service, idx) => (
-                      <div key={idx} className="flex items-center gap-2">
+                    <div key={idx} className="flex items-center gap-3 bg-white rounded-lg p-3 shadow-sm border border-blue-100 hover:border-blue-300 transition-colors">
                         <svg className="w-5 h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                         </svg>
-                        <span className="text-sm text-gray-700">{service}</span>
+                      <span className="text-sm md:text-base text-gray-800 font-semibold">{service}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Contact Information */}
-                <div className="space-y-3 pt-4 border-t border-gray-200">
-                  <div className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    <p className="text-sm text-gray-700">B-39, Prabhu Marg, Tilak Nagar, Raja Park Jaipur 302004</p>
+              {/* Right Side - MAA YOJANA Logo */}
+              <div className="p-6 md:p-8 bg-white flex items-center justify-center">
+                <div className="relative w-full max-w-xs">
+                  <Image
+                    src="/MAA_YOJANA.png"
+                    alt="MAA YOJANA Logo - मुख्यमंत्री आयुष्मान आरोग्य योजना"
+                    width={400}
+                    height={400}
+                    className="w-full h-full object-contain drop-shadow-2xl"
+                    priority
+                  />
                   </div>
-                  <div className="flex items-center gap-3">
-                    <svg className="w-5 h-5 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                    </svg>
-                    <a href="tel:+918934076703" className="text-sm text-gray-700 hover:text-blue-600">+91-8934076703</a>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <svg className="w-5 h-5 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                    </svg>
-                    <a href="https://amritamheartcare.com" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-700 hover:text-blue-600">amritamheartcare.com</a>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Credibility Section - Trust Indicators */}
-      <section className="relative py-12 sm:py-16 bg-gradient-to-b from-white to-blue-50/30 border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Why Choose Us */}
-          <div className="mb-12">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3">
-                Why Choose Amritam Heart Care
-              </h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Trusted by thousands for exceptional cardiac care and comprehensive multispeciality services
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow border border-gray-100">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">NABH Accredited</h3>
-                <p className="text-sm text-gray-600">Highest standards of quality and patient safety</p>
-              </div>
-              <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow border border-gray-100">
-                <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">24/7 Emergency Care</h3>
-                <p className="text-sm text-gray-600">Round-the-clock cardiac emergency services</p>
-              </div>
-              <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow border border-gray-100">
-                <div className="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">Advanced Technology</h3>
-                <p className="text-sm text-gray-600">State-of-the-art medical equipment and facilities</p>
-              </div>
-              <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow border border-gray-100">
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">Expert Team</h3>
-                <p className="text-sm text-gray-600">Renowned cardiologists and multispeciality doctors</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Accreditations & Certifications */}
-          <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
-            <h3 className="text-xl font-bold text-gray-900 text-center mb-6">Accreditations & Certifications</h3>
-            <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12">
-              <div className="flex flex-col items-center gap-2">
-                <div className="w-20 h-20 bg-blue-50 rounded-lg flex items-center justify-center border-2 border-blue-200">
-                  <span className="text-2xl font-bold text-blue-600">NABH</span>
-                </div>
-                <span className="text-xs text-gray-600 font-medium">Accredited</span>
-              </div>
-              <div className="flex flex-col items-center gap-2">
-                <div className="w-20 h-20 bg-green-50 rounded-lg flex items-center justify-center border-2 border-green-200">
-                  <span className="text-2xl font-bold text-green-600">ISO</span>
-                </div>
-                <span className="text-xs text-gray-600 font-medium">Certified</span>
-              </div>
-              <div className="flex flex-col items-center gap-2">
-                <div className="w-20 h-20 bg-purple-50 rounded-lg flex items-center justify-center border-2 border-purple-200">
-                  <svg className="w-12 h-12 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                  </svg>
-                </div>
-                <span className="text-xs text-gray-600 font-medium">Trusted Care</span>
-              </div>
-              <div className="flex flex-col items-center gap-2">
-                <div className="w-20 h-20 bg-red-50 rounded-lg flex items-center justify-center border-2 border-red-200">
-                  <svg className="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                  </svg>
-                </div>
-                <span className="text-xs text-gray-600 font-medium">Quality Assured</span>
-              </div>
-            </div>
-          </div>
+      {/* Doctor's Blog & Educational Videos Section - Modern Design */}
+      <section className="relative py-20 sm:py-24 lg:py-32 bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden">
+        {/* Decorative Background Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
         </div>
-      </section>
 
-      {/* Services & Facilities Section */}
-      <section className="relative py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-blue-50/30 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Section Header */}
-          <div className="text-center mb-12 sm:mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-full border border-blue-100 mb-4">
-              <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-              <span className="text-sm font-semibold text-blue-600">Our Services & Facilities</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Modern Section Header */}
+          <div className="text-center mb-16 sm:mb-20">
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/80 backdrop-blur-sm rounded-full border border-blue-100 shadow-sm mb-6">
+              <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></div>
+              <span className="text-sm font-semibold text-blue-600">Educational Resources</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-              Comprehensive Cardiac Care
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
+              Learn from Our{' '}
+              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                Expert
+              </span>
             </h2>
-            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
-              Advanced procedures, state-of-the-art facilities, and round-the-clock emergency care
+            <p className="text-xl sm:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Discover expert insights through informative blogs and educational videos by Dr. Pankaj Goyal
             </p>
           </div>
 
-          {/* Services Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
-            {/* Advance Cath Lab */}
-            <div className="bg-gradient-to-br from-pink-50 to-red-50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100 hover:-translate-y-1">
-              <div className="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Advance Cath Lab</h3>
-              <p className="text-sm text-gray-600">State-of-the-art cardiac intervention</p>
-            </div>
-
-            {/* CCU */}
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-100 hover:-translate-y-1">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-            <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">CCU</h3>
-              <p className="text-sm text-gray-600">Critical Care Unit - 24/7 monitoring</p>
-            </div>
-
-            {/* एंजियोग्राफी (Angiography) */}
-            <div className="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-purple-100 hover:-translate-y-1">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">एंजियोग्राफी</h3>
-              <p className="text-sm text-gray-600">Angiography - Heart imaging</p>
-            </div>
-
-            {/* एंजियोप्लास्टी (Angioplasty) */}
-            <div className="bg-gradient-to-br from-red-50 to-rose-50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-red-100 hover:-translate-y-1">
-              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">एंजियोप्लास्टी</h3>
-              <p className="text-sm text-gray-600">Angioplasty - Blockage treatment</p>
-            </div>
-
-            {/* पेसमेकर (Pacemaker) */}
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-green-100 hover:-translate-y-1">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">पेसमेकर</h3>
-              <p className="text-sm text-gray-600">Pacemaker Implantation</p>
-            </div>
-
-            {/* 24*7 Emergency */}
-            <div className="bg-gradient-to-br from-red-500 to-pink-600 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 text-white hover:-translate-y-1">
-              <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-2xl font-bold mb-2">24/7</h3>
-              <p className="text-red-100 text-sm">Emergency Services</p>
-            </div>
-
-            {/* ICU (Critical Care) Ward */}
-            <div className="bg-gradient-to-br from-cyan-50 to-teal-50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-cyan-100 hover:-translate-y-1">
-              <div className="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">ICU Ward</h3>
-              <p className="text-sm text-gray-600">Critical Care Unit</p>
-            </div>
-
-            {/* Ambulance */}
-            <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-orange-100 hover:-translate-y-1">
-              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Ambulance</h3>
-              <p className="text-sm text-gray-600">24/7 Emergency Transport</p>
-            </div>
-
-            {/* Day Care Unit */}
-            <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-yellow-100 hover:-translate-y-1">
-              <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Day Care Unit</h3>
-              <p className="text-sm text-gray-600">Same-day procedures</p>
+          {/* Tab Navigation */}
+          <div className="flex justify-center mb-12">
+            <div className="inline-flex bg-white/80 backdrop-blur-sm rounded-2xl p-2 shadow-lg border border-gray-100">
+              <button className="px-8 py-3 rounded-xl font-semibold text-sm sm:text-base transition-all duration-300 bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md">
+                All Content
+              </button>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Advanced Technology & Equipment Section */}
-      <section className="relative py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-blue-50/30 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Section Header */}
-          <div className="text-center mb-12 sm:mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-pink-50 rounded-full border border-pink-100 mb-4">
-              <svg className="w-4 h-4 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-              </svg>
-              <span className="text-sm font-semibold text-pink-600">State-of-the-Art Technology</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-              Advanced Medical Equipment
-            </h2>
-            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
-              Equipped with cutting-edge technology for precise diagnosis and treatment
-            </p>
-          </div>
+          {/* Main Content Grid - Modern Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+            {/* Featured Blog Post - Large Card */}
+            <div className="lg:col-span-8">
+              <article 
+                onClick={() => setSelectedBlog('best-heart-hospitals')}
+                className="group relative bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 cursor-pointer"
+              >
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-pink-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                
+                <div className="relative p-8 sm:p-10 lg:p-12">
+                  {/* Category & Meta */}
+                  <div className="flex items-center gap-3 mb-6 flex-wrap">
+                    <span className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-semibold rounded-full shadow-md">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                      </svg>
+                      Blog
+                    </span>
+                    <span className="text-sm text-gray-500">•</span>
+                    <span className="text-sm text-gray-600 font-medium">Cardiology</span>
+                    <span className="text-sm text-gray-500">•</span>
+                    <span className="text-sm text-gray-600">7 min read</span>
+                  </div>
 
-          {/* Advanced Cath Lab & CCU */}
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 mb-8">
-            <div className="grid md:grid-cols-2 gap-0">
-              {/* Left Side - Text Content */}
-              <div className="bg-gradient-to-br from-white to-pink-50/30 p-8 sm:p-12 flex flex-col justify-center">
-                <div className="mb-4">
-                  <span className="text-sm sm:text-base text-gray-600 font-medium">Now equipped with</span>
+                  {/* Title */}
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-6 leading-tight">
+                    <span className="text-red-600">List of the Best Heart</span>
+                    <br />
+                    <span className="text-blue-600">Specialist Hospitals in Jaipur</span>
+                  </h1>
+
+                  {/* Blog Image */}
+                  <div className="relative mb-8 rounded-2xl overflow-hidden shadow-2xl group-hover:shadow-3xl transition-shadow duration-500">
+                    <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200">
+                      <Image
+                        src="/blog_1.png"
+                        alt="List of the Best Heart Specialist Hospitals in Jaipur"
+                        width={800}
+                        height={450}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-lg sm:text-xl text-gray-700 mb-8 leading-relaxed">
+                    Discover Jaipur's top heart specialist hospitals, with Amritam Heart Care leading as the best heart hospital in Rajasthan. Learn about experienced cardiologists like Dr. Pankaj Goyal, advanced Cath Labs, emergency cardiac care, and comprehensive services.
+                  </p>
+
+                  {/* CTA Button */}
+                  <div className="flex items-center gap-4">
+                    <button className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-semibold text-lg rounded-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 group/btn">
+                      <span>Read Full Article</span>
+                      <svg className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                    <div className="flex items-center gap-2 text-gray-500">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span className="text-sm">7 min read</span>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-pink-600 mb-6 leading-tight">
-                  NEW ADVANCED<br />
-                  CATH LAB<br />
-                  & CCU Care
+              </article>
+            </div>
+
+            {/* Sidebar - Recent Posts & Videos */}
+            <div className="lg:col-span-4 space-y-6">
+              {/* Recent Posts Card */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-gray-100 p-6 sticky top-8">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-bold text-gray-900">Recent Posts</h3>
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  {/* Recent Post 1 */}
+                  <a href="#" className="block group p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-300 border border-transparent hover:border-blue-100">
+                    <div className="flex gap-3">
+                      <div className="w-16 h-16 flex-shrink-0 rounded-xl overflow-hidden bg-gray-100 shadow-md group-hover:shadow-lg transition-shadow">
+                        <Image
+                          src="/blog_1.png"
+                          alt="Blog post"
+                          width={64}
+                          height={64}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs text-gray-500 mb-1 font-semibold uppercase tracking-wide">Blog</p>
+                        <h4 className="text-sm font-bold text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors leading-snug">
+                          List of Heart Hospitals in Jaipur under Chiranjeevi and Maa Yojana
+                        </h4>
+                      </div>
+                    </div>
+                  </a>
+
+                  {/* Recent Post 2 */}
+                  <button 
+                    onClick={() => setSelectedBlog('best-heart-hospitals')}
+                    className="block w-full text-left group p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-300 border border-transparent hover:border-blue-100"
+                  >
+                    <div className="flex gap-3">
+                      <div className="w-16 h-16 flex-shrink-0 rounded-xl overflow-hidden bg-gradient-to-br from-red-100 to-pink-100 flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
+                        <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.318a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs text-gray-500 mb-1 font-semibold uppercase tracking-wide">Blog</p>
+                        <h4 className="text-sm font-bold text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors leading-snug">
+                          List of the Best Heart Specialist Hospitals in Jaipur
+                        </h4>
+                      </div>
+                    </div>
+                  </button>
+
+                  {/* Recent Post 3 - Video */}
+                  <a 
+                    href="https://www.youtube.com/watch?v=ed36fCm-dNo" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="block group p-3 rounded-xl hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 transition-all duration-300 border border-transparent hover:border-red-100"
+                  >
+                    <div className="flex gap-3">
+                      <div className="relative w-16 h-16 flex-shrink-0 rounded-xl overflow-hidden shadow-md group-hover:shadow-lg transition-shadow">
+                        <img 
+                          src={`https://img.youtube.com/vi/ed36fCm-dNo/hqdefault.jpg`}
+                          alt="Video thumbnail"
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.src = `https://img.youtube.com/vi/ed36fCm-dNo/hqdefault.jpg`;
+                          }}
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/50 group-hover:bg-black/40 transition-colors">
+                          <div className="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center">
+                            <svg className="w-4 h-4 text-red-600 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M8 5v14l11-7z"/>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs text-red-600 mb-1 font-semibold uppercase tracking-wide">Video</p>
+                        <h4 className="text-sm font-bold text-gray-900 line-clamp-2 group-hover:text-red-600 transition-colors leading-snug">
+                          <YouTubeVideoTitle videoId="ed36fCm-dNo" defaultTitle="Educational Video by Dr. Pankaj Goyal" />
+                        </h4>
+                      </div>
+                    </div>
+                  </a>
+
+                  {/* Recent Post 4 */}
+                  <a href="#" className="block group p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-300 border border-transparent hover:border-blue-100">
+                    <div className="flex gap-3">
+                      <div className="w-16 h-16 flex-shrink-0 rounded-xl overflow-hidden bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
+                        <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs text-gray-500 mb-1 font-semibold uppercase tracking-wide">Blog</p>
+                        <h4 className="text-sm font-bold text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors leading-snug">
+                          What Makes Amritam Heart Care the Best Heart Hospital in Rajasthan?
+                        </h4>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+
+                {/* View All Link */}
+                <a href="#" className="mt-6 block text-center py-3 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
+                  View All Posts →
+                </a>
+              </div>
+
+              {/* Quick Video Access */}
+              <div className="bg-gradient-to-br from-red-50 to-pink-50 rounded-3xl shadow-xl border border-red-100 p-6">
+                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <svg className="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                  Educational Videos
                 </h3>
-                <p className="text-base sm:text-lg text-gray-700 mb-6 leading-relaxed">
-                  Our newly upgraded Cardiac Catheterization Laboratory features the latest imaging technology for interventional cardiology procedures, ensuring precise diagnosis and treatment.
-                </p>
-                <ul className="space-y-3 mb-6">
-                  <li className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-sm sm:text-base text-gray-700">Advanced C-Arm Angiography System</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-sm sm:text-base text-gray-700">High-Resolution Digital Imaging</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-sm sm:text-base text-gray-700">24/7 Critical Care Unit (CCU)</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-sm sm:text-base text-gray-700">Real-time Monitoring Systems</span>
-                  </li>
-                </ul>
-                <button className="inline-flex items-center gap-2 px-6 py-3 bg-pink-600 text-white font-semibold rounded-lg hover:bg-pink-700 transition-colors shadow-md hover:shadow-lg w-fit">
-                  <span>Learn More</span>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
-              </div>
-
-              {/* Right Side - Equipment Image Placeholder */}
-              <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center p-8 sm:p-12">
-                <div className="relative w-full h-full min-h-[400px] bg-white rounded-lg shadow-inner border-2 border-gray-300 flex items-center justify-center">
-                  {/* Placeholder for Cath Lab Image */}
-                  <div className="text-center p-8">
-                    <div className="w-32 h-32 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
-                      <svg className="w-16 h-16 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                      </svg>
-                    </div>
-                    <p className="text-gray-600 font-medium">Cath Lab Equipment Image</p>
-                    <p className="text-sm text-gray-500 mt-2">Add your equipment photo here</p>
-                  </div>
-                  {/* Optional: Add play button overlay if it's a video */}
-                  {/* <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <div className="w-16 h-16 bg-orange-500 rounded-lg flex items-center justify-center shadow-xl cursor-pointer hover:bg-orange-600 transition-colors">
-                      <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
-                    </div>
-                  </div> */}
+                <div className="space-y-3">
+                  {[
+                    { id: 'ed36fCm-dNo', title: 'Video 1' },
+                    { id: 'j0UDwISKFy0', title: 'Video 2' },
+                    { id: 'MgEi3bZyRrY', title: 'Video 3' }
+                  ].map((video) => (
+                    <a
+                      key={video.id}
+                      href={`https://www.youtube.com/watch?v=${video.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block group"
+                    >
+                      <div className="flex gap-3 p-2 rounded-lg hover:bg-white/60 transition-colors">
+                        <div className="relative w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden">
+                          <img 
+                            src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`}
+                            alt="Video thumbnail"
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                            <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M8 5v14l11-7z"/>
+                            </svg>
+                          </div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="text-xs font-semibold text-gray-900 line-clamp-2 group-hover:text-red-600 transition-colors">
+                            <YouTubeVideoTitle videoId={video.id} defaultTitle="Educational Video" />
+                          </h4>
+                        </div>
+                      </div>
+                    </a>
+                  ))}
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Other Advanced Equipment Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow border border-gray-200">
-              <div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Echocardiography</h3>
-              <p className="text-sm text-gray-600">Advanced 4D echo systems for detailed heart imaging</p>
-            </div>
-            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow border border-gray-200">
-              <div className="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">CT & MRI Scans</h3>
-              <p className="text-sm text-gray-600">High-resolution imaging for accurate diagnosis</p>
-            </div>
-            <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow border border-gray-200">
-              <div className="w-16 h-16 bg-red-100 rounded-lg flex items-center justify-center mb-4">
-                <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">ICU Monitoring</h3>
-              <p className="text-sm text-gray-600">Advanced life support and monitoring systems</p>
             </div>
           </div>
         </div>
@@ -1168,6 +1085,161 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Blog Modal */}
+      {selectedBlog === 'best-heart-hospitals' && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+          onClick={() => setSelectedBlog(null)}
+        >
+          <div 
+            className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4 flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-white">List of the Best Heart Specialist Hospitals in Jaipur</h2>
+              <button
+                onClick={() => setSelectedBlog(null)}
+                className="text-white hover:text-gray-200 transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="overflow-y-auto flex-1 p-6 sm:p-8">
+              <div className="prose prose-lg max-w-none">
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  Considered the <strong>best heart hospital in Rajasthan</strong>, it is a major center of cardiac care. There are many excellent cardiology centres in the city, recognized for utilising the latest treatments, employing seasoned doctors, and prioritising patient care. Planning to get heart care for you or your loved ones? We're here to help you pick the best ones.
+                </p>
+
+                <p className="text-gray-700 leading-relaxed mb-6">
+                  Leading this group is <strong>Amritam Heart Care</strong>, which has earned a reputation as the <strong>best heart hospital in Rajasthan</strong> thanks to its premium patient service, advanced facilities, and renowned cardiologist, <strong>Dr. Pankaj Goyal</strong>.
+                </p>
+
+                <div className="bg-blue-50 border-l-4 border-blue-600 p-4 mb-6 rounded-r-lg">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">1. Amritam Heart Care</h3>
+                  <p className="text-gray-700 mb-2"><strong>Location:</strong> B-39, Prabhu Marg, close to A.C. Market, Tilak Nagar, Jaipur</p>
+                  <p className="text-gray-700 mb-2"><strong>Contact:</strong> +91 8934076703 | amritamheartcare@gmail.com</p>
+                  <p className="text-gray-700 mb-2"><strong>Lead Cardiologist:</strong> Dr. Pankaj Goyal (MBBS, MD, DM, Gold Medalist)</p>
+                  <p className="text-gray-700 mb-4">Over 25+ years of experience in cardiology.</p>
+
+                  <p className="text-gray-700 mb-4">
+                    Amritam Heart Care keeps earning the title of <strong>best heart hospital in Rajasthan</strong>, providing excellent heart treatments with kindness. As the gold medalist in cardiology, Dr. Goyal oversees a team that helps the hospital treat small and serious cardiac cases at any time.
+                  </p>
+
+                  <h4 className="font-bold text-gray-900 mb-2">Why Patients Choose Amritam Heart Care:</h4>
+                  <ul className="list-disc list-inside space-y-2 text-gray-700 mb-4">
+                    <li>Emergency care for heart problems at any time</li>
+                    <li>The latest Cath Lab and diagnostic equipment are available for patients</li>
+                    <li>Procedures that include angioplasty, putting in pacemakers, and replacing heart valves</li>
+                    <li>Emergency care, critical care, and medical care in an ICU</li>
+                    <li>Adapted plans and advice about lifestyle care that fits within your budget</li>
+                  </ul>
+
+                  <p className="text-gray-700">
+                    To treat both the condition and its consequences, Amritam Heart Care fully delivers the advantages of being the <strong>best heart hospital in Rajasthan</strong>.
+                  </p>
+                </div>
+
+                <h3 className="text-xl font-bold text-gray-900 mb-3 mt-6">Other Top Heart Hospitals in Jaipur:</h3>
+                
+                <div className="space-y-4 mb-6">
+                  <div className="border-l-4 border-gray-300 pl-4">
+                    <h4 className="font-bold text-gray-900 mb-1">2. EHCC Eternal Hospital</h4>
+                    <p className="text-gray-700 text-sm">Many people also connect the EHCC hospital with the best heart hospital in Rajasthan, which is close to Jawahar Circle. The group's successful services and advanced resources enable them to handle cardiac operations and assist many patients.</p>
+                  </div>
+
+                  <div className="border-l-4 border-gray-300 pl-4">
+                    <h4 className="font-bold text-gray-900 mb-1">3. Fortis Escorts Hospital in Jaipur</h4>
+                    <p className="text-gray-700 text-sm">As a member of the Fortis network, this hospital has leading cardiac facilities and is thought of by visitors as one of the best heart hospital in Rajasthan. An advanced Cath Lab and expert specialists work here to treat emergency and critical patients.</p>
+                  </div>
+
+                  <div className="border-l-4 border-gray-300 pl-4">
+                    <h4 className="font-bold text-gray-900 mb-1">4. Manipal Hospital in Jaipur</h4>
+                    <p className="text-gray-700 text-sm">Manipal Hospital's many heart care services makes it one of the best heart hospital in Rajasthan. Because of its top infrastructure and professional doctors, Manipal offers both surgical and medical care for heart diseases.</p>
+                  </div>
+
+                  <div className="border-l-4 border-gray-300 pl-4">
+                    <h4 className="font-bold text-gray-900 mb-1">5. Rukmani Birla Hospital</h4>
+                    <p className="text-gray-700 text-sm">The CK Birla Heart Centre is at RBH, and the hospital is a leading candidate for the best heart hospital in Rajasthan. It handles open-heart procedures, treatments for heart valve problems, and heart health care programs.</p>
+                  </div>
+
+                  <div className="border-l-4 border-gray-300 pl-4">
+                    <h4 className="font-bold text-gray-900 mb-1">6. Santokba Durlabhji Memorial Hospital</h4>
+                    <p className="text-gray-700 text-sm">SDMH has long supported medical care for people in Jaipur. Thanks to its strong heart care and reasonable rates, it is the favoured choice for those aiming to find the best heart hospital in Rajasthan with a long history.</p>
+                  </div>
+
+                  <div className="border-l-4 border-gray-300 pl-4">
+                    <h4 className="font-bold text-gray-900 mb-1">7. Soni Hospital–Heart Institute</h4>
+                    <p className="text-gray-700 text-sm">On Tonk Road, Soni Hospital is famous for its inexpensive cardiac treatments and its emergency heart care, 24 hours a day. Most concerned about the budget often choose it, as it's regularly recommended among the best heart hospital in Rajasthan.</p>
+                  </div>
+
+                  <div className="border-l-4 border-gray-300 pl-4">
+                    <h4 className="font-bold text-gray-900 mb-1">8. Surya Hospital</h4>
+                    <p className="text-gray-700 text-sm">Even though it is a new company, Surya Hospital provides cardiology services with the latest tools and innovations. Because of the rising satisfaction of its patients, it is getting noticed as the best heart hospital in Rajasthan.</p>
+                  </div>
+                </div>
+
+                <div className="bg-gray-50 rounded-lg p-6 mb-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">What Sets a Hospital Apart as the Best Heart Hospital in Rajasthan?</h3>
+                  <ul className="space-y-3 text-gray-700">
+                    <li><strong>1. Experienced Cardiologists:</strong> The top cardiologist should lead the hospital team. Dr. Pankaj Goyal at Amritam Heart Care is the best heart specialist in Rajasthan because of his long record and gold medal in cardiology.</li>
+                    <li><strong>2. Emergency Heart Care:</strong> Heart emergencies cannot wait for a delay in action. Emergency services are available at all times, and a team for quick handling of stroke, heart attack, and cardiac arrest cases is a necessity.</li>
+                    <li><strong>3. Advanced Infrastructure:</strong> All areas in the hospital, including Cath Labs, ICU units and ECG, 2D Echo, and TMT, require advanced and frequently updated equipment.</li>
+                    <li><strong>4. Comprehensive Services:</strong> A hospital with cardiology services, recovery programs after surgery, and help for healthy living can be seen as the best heart hospital in Rajasthan.</li>
+                    <li><strong>5. Taking care of the whole heart:</strong> Best heart hospital in Rajasthan strives to help the heart by serving personalized diets, providing rehabilitation aid, overseeing drug use, and educating patients.</li>
+                  </ul>
+                </div>
+
+                <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg p-6 mb-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">The Reason Amritam Heart Care Is the Best</h3>
+                  <p className="text-gray-700 mb-4">
+                    Amritam Heart Care isn't like any other hospital—it is solely focused on heart care. Here are the reasons why Amritam Heart Care earns the name of the <strong>best heart hospital in Rajasthan</strong>:
+                  </p>
+                  <ul className="space-y-2 text-gray-700">
+                    <li>• <strong>Getting Expert Advice from a Gold Medalist:</strong> Dr. Pankaj Goyal's great leadership results in an exact diagnosis and a highly effective cure.</li>
+                    <li>• <strong>Modern Cardiology Strategies:</strong> The hospital provides quality treatment for cases that include device closures, angioplasty, and ICD implant pairs.</li>
+                    <li>• <strong>Caring for All:</strong> Patients in any ward can expect all-around comfort from the facility.</li>
+                  </ul>
+                  <p className="text-gray-700 mt-4">
+                    It works to improve its facilities and processes, so it always remains at the forefront of the field.
+                  </p>
+                </div>
+
+                <div className="border-t border-gray-200 pt-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">Final Thoughts</h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    Any cardiac illness must be managed immediately, with experts and in advanced healthcare settings. Because of its reputable hospitals, Jaipur should be considered the <strong>best heart hospital in Rajasthan</strong>. Still, Amritam Heart Care stays on top because it brings together kindness, excellent care, and progress in heart care.
+                  </p>
+                  <p className="text-gray-700 leading-relaxed mt-4">
+                    That's why, when you need the <strong>best heart hospital in Rajasthan</strong>, you should remember these important points and start with Amritam Heart Care.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="border-t border-gray-200 px-6 py-4 bg-gray-50 flex items-center justify-between">
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>7 min read</span>
+              </div>
+              <button
+                onClick={() => setSelectedBlog(null)}
+                className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
