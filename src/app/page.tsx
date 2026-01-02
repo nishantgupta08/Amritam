@@ -1095,45 +1095,87 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Doctor Profile / Expert Card */}
-            <div className="bg-gradient-to-br from-blue-600 to-cyan-600 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-blue-400 hover:border-blue-500 relative group">
+            {/* Multi-Specialty Hospital Card */}
+            <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-cyan-600 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-blue-400 hover:border-blue-500 relative group">
               <div className="absolute top-2 left-2 z-10">
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/20 backdrop-blur-md text-white text-xs font-bold rounded-full shadow-md border border-white/30">
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                   </svg>
-                  Expert Team
+                  Multi-Specialty
                 </span>
               </div>
               <div className="p-6 text-white">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border-2 border-white/30">
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                {/* Header */}
+                <div className="mb-6">
+                  <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border-2 border-white/30 mb-4 mx-auto group-hover:scale-110 transition-transform">
+                    <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
                   </div>
-                  <div>
-                    <h3 className="font-bold text-xl mb-1">Dr. Pankaj Goyal</h3>
-                    <p className="text-blue-100 text-sm">MBBS, MD, DM (Gold Medalist)</p>
-                    <p className="text-blue-50 text-xs mt-1">Sr. Consultant Cardiologist</p>
+                  <h3 className="font-bold text-2xl mb-2 text-center">Multi-Specialty Hospital</h3>
+                  <p className="text-blue-100 text-sm text-center mb-4">Comprehensive Healthcare Services</p>
+                </div>
+
+                {/* Specialties Grid */}
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  <div className="bg-white/15 backdrop-blur-sm rounded-lg p-3 border border-white/20">
+                    <div className="flex items-center gap-2 mb-1">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                      </svg>
+                      <span className="text-xs font-semibold text-white">Cardiology</span>
+                    </div>
+                  </div>
+                  <div className="bg-white/15 backdrop-blur-sm rounded-lg p-3 border border-white/20">
+                    <div className="flex items-center gap-2 mb-1">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      <span className="text-xs font-semibold text-white">General</span>
+                    </div>
+                  </div>
+                  <div className="bg-white/15 backdrop-blur-sm rounded-lg p-3 border border-white/20">
+                    <div className="flex items-center gap-2 mb-1">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                      </svg>
+                      <span className="text-xs font-semibold text-white">Urology</span>
+                    </div>
+                  </div>
+                  <div className="bg-white/15 backdrop-blur-sm rounded-lg p-3 border border-white/20">
+                    <div className="flex items-center gap-2 mb-1">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                      </svg>
+                      <span className="text-xs font-semibold text-white">Nephrology</span>
+                    </div>
                   </div>
                 </div>
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center gap-2 text-sm">
-                    <svg className="w-4 h-4 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                    </svg>
-                    <span className="text-blue-50">25+ Years Experience</span>
+
+                {/* Stats */}
+                <div className="flex items-center justify-center gap-4 mb-4 pt-4 border-t border-white/20">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-white">10+</div>
+                    <div className="text-xs text-blue-100">Specialties</div>
                   </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <svg className="w-4 h-4 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                    <span className="text-blue-50">Director: Amritam Heart Care</span>
+                  <div className="w-px h-8 bg-white/30"></div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-white">24/7</div>
+                    <div className="text-xs text-blue-100">Emergency</div>
                   </div>
                 </div>
-                <button className="w-full mt-4 px-4 py-2.5 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors shadow-md hover:shadow-lg flex items-center justify-center gap-2">
-                  <span>View Profile</span>
+
+                <button 
+                  onClick={() => {
+                    const servicesSection = document.getElementById('services');
+                    if (servicesSection) {
+                      servicesSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                  className="w-full mt-4 px-4 py-2.5 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                >
+                  <span>View All Services</span>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -1218,46 +1260,88 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Video 3 - Doctor Profile / Expert Card */}
+                {/* Video 3 - Multi-Specialty Hospital Card */}
                 <div className="min-w-full px-2">
-                  <div className="bg-gradient-to-br from-blue-600 to-cyan-600 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-blue-400 hover:border-blue-500 relative group">
+                  <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-cyan-600 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-blue-400 hover:border-blue-500 relative group">
                     <div className="absolute top-2 left-2 z-10">
                       <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/20 backdrop-blur-md text-white text-xs font-bold rounded-full shadow-md border border-white/30">
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                         </svg>
-                        Expert Team
+                        Multi-Specialty
                       </span>
                     </div>
                     <div className="p-6 text-white">
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border-2 border-white/30">
-                          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      {/* Header */}
+                      <div className="mb-6">
+                        <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border-2 border-white/30 mb-4 mx-auto group-hover:scale-110 transition-transform">
+                          <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                           </svg>
                         </div>
-                        <div>
-                          <h3 className="font-bold text-xl mb-1">Dr. Pankaj Goyal</h3>
-                          <p className="text-blue-100 text-sm">MBBS, MD, DM (Gold Medalist)</p>
-                          <p className="text-blue-50 text-xs mt-1">Sr. Consultant Cardiologist</p>
+                        <h3 className="font-bold text-2xl mb-2 text-center">Multi-Specialty Hospital</h3>
+                        <p className="text-blue-100 text-sm text-center mb-4">Comprehensive Healthcare Services</p>
+                      </div>
+
+                      {/* Specialties Grid */}
+                      <div className="grid grid-cols-2 gap-3 mb-4">
+                        <div className="bg-white/15 backdrop-blur-sm rounded-lg p-3 border border-white/20">
+                          <div className="flex items-center gap-2 mb-1">
+                            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                            <span className="text-xs font-semibold text-white">Cardiology</span>
+                          </div>
+                        </div>
+                        <div className="bg-white/15 backdrop-blur-sm rounded-lg p-3 border border-white/20">
+                          <div className="flex items-center gap-2 mb-1">
+                            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <span className="text-xs font-semibold text-white">General</span>
+                          </div>
+                        </div>
+                        <div className="bg-white/15 backdrop-blur-sm rounded-lg p-3 border border-white/20">
+                          <div className="flex items-center gap-2 mb-1">
+                            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                            <span className="text-xs font-semibold text-white">Urology</span>
+                          </div>
+                        </div>
+                        <div className="bg-white/15 backdrop-blur-sm rounded-lg p-3 border border-white/20">
+                          <div className="flex items-center gap-2 mb-1">
+                            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                            <span className="text-xs font-semibold text-white">Nephrology</span>
+                          </div>
                         </div>
                       </div>
-                      <div className="space-y-2 mb-4">
-                        <div className="flex items-center gap-2 text-sm">
-                          <svg className="w-4 h-4 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                          </svg>
-                          <span className="text-blue-50">25+ Years Experience</span>
+
+                      {/* Stats */}
+                      <div className="flex items-center justify-center gap-4 mb-4 pt-4 border-t border-white/20">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-white">10+</div>
+                          <div className="text-xs text-blue-100">Specialties</div>
                         </div>
-                        <div className="flex items-center gap-2 text-sm">
-                          <svg className="w-4 h-4 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                          </svg>
-                          <span className="text-blue-50">Director: Amritam Heart Care</span>
+                        <div className="w-px h-8 bg-white/30"></div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-white">24/7</div>
+                          <div className="text-xs text-blue-100">Emergency</div>
                         </div>
                       </div>
-                      <button className="w-full mt-4 px-4 py-2.5 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors shadow-md hover:shadow-lg flex items-center justify-center gap-2">
-                        <span>View Profile</span>
+
+                      <button 
+                        onClick={() => {
+                          const servicesSection = document.getElementById('services');
+                          if (servicesSection) {
+                            servicesSection.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }}
+                        className="w-full mt-4 px-4 py-2.5 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                      >
+                        <span>View All Services</span>
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
@@ -1505,139 +1589,378 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials Section - YouTube Videos & Cards Carousel */}
-      <section className="relative py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-white via-blue-50/20 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Testimonials Section - Modern Mix of Text & Video Reviews */}
+      <section className="relative py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-white via-blue-50/30 to-purple-50/20 overflow-hidden">
+        {/* Decorative Background Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200/20 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-200/20 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Section Header */}
           <div className="text-center mb-12 sm:mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-50 rounded-full border border-red-100 mb-4">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-50 to-pink-50 rounded-full border border-red-100 mb-4 shadow-sm">
               <svg className="w-4 h-4 text-red-600" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
               </svg>
               <span className="text-sm font-semibold text-red-600">Patient Stories</span>
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-              What Our Patients Say
+              What Our <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Patients Say</span>
             </h2>
             <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
               Real stories from patients who trusted us with their heart care journey
             </p>
           </div>
 
-          {/* Desktop YouTube Videos Grid - Hidden on Mobile */}
-          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {/* Video 1 - Placeholder */}
-            <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border border-gray-200">
-              <div className="relative aspect-video bg-gray-900">
-                <iframe
-                  className="w-full h-full"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                  title="Patient Testimonial 1"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
+          {/* Desktop Layout - Mixed Grid of Videos and Text Testimonials */}
+          <div className="hidden md:block">
+            <div className="grid grid-cols-12 gap-6 mb-6">
+              {/* Large Video Card - Left Side */}
+              <div className="col-span-12 lg:col-span-7 group">
+                <div className="bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-1">
+                  <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800">
+                    <iframe
+                      className="w-full h-full"
+                      src="https://www.youtube.com/embed/WAQhacSLIh4"
+                      title="Patient Success Story"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                    <div className="absolute top-4 left-4">
+                      <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-red-600 text-white text-xs font-bold rounded-full shadow-lg">
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        Video Review
+                      </span>
+                    </div>
+                  </div>
+                  <div className="p-6 bg-gradient-to-br from-white to-gray-50">
+                    <h3 className="font-bold text-xl text-gray-900 mb-2">Life-Saving Heart Surgery</h3>
+                    <p className="text-gray-600 mb-4">A patient shares their incredible recovery journey after complex cardiac surgery</p>
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                            <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                          </svg>
+                        ))}
+                      </div>
+                      <span className="text-sm text-gray-500">5.0 Rating</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-1">Success Story</h3>
-                <p className="text-sm text-gray-600">Patient shares their recovery journey</p>
+
+              {/* Text Testimonials - Right Side (Stacked) */}
+              <div className="col-span-12 lg:col-span-5 space-y-6">
+                {/* Testimonial 1 */}
+                <div className="bg-gradient-to-br from-white to-blue-50/30 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-100/50 transform hover:-translate-y-1">
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
+                      <span className="text-white font-bold text-lg">RK</span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <h4 className="font-bold text-gray-900">Rajesh Kumar</h4>
+                        <span className="text-xs text-gray-500">• Jaipur</span>
+                      </div>
+                      <div className="flex items-center gap-1 mb-3">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                            <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                          </svg>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-gray-700 leading-relaxed mb-4">
+                    &quot;Excellent care and treatment. The doctors are highly skilled and the staff is very caring. My heart condition was treated successfully.&quot;
+                  </p>
+                  <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+                    Cardiac Surgery
+                  </span>
+                </div>
+
+                {/* Testimonial 2 */}
+                <div className="bg-gradient-to-br from-white to-pink-50/30 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-pink-100/50 transform hover:-translate-y-1">
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-rose-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
+                      <span className="text-white font-bold text-lg">PS</span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <h4 className="font-bold text-gray-900">Priya Sharma</h4>
+                        <span className="text-xs text-gray-500">• Delhi</span>
+                      </div>
+                      <div className="flex items-center gap-1 mb-3">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                            <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                          </svg>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-gray-700 leading-relaxed mb-4">
+                    &quot;Amritam Heart Care saved my father&apos;s life. The emergency response was quick and the treatment was world-class. Forever grateful!&quot;
+                  </p>
+                  <span className="inline-block px-3 py-1 bg-pink-100 text-pink-700 rounded-full text-xs font-medium">
+                    Emergency Care
+                  </span>
+                </div>
               </div>
             </div>
 
-            {/* Video 2 - Placeholder */}
-            <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border border-gray-200">
-              <div className="relative aspect-video bg-gray-900">
-                <iframe
-                  className="w-full h-full"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                  title="Patient Testimonial 2"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
+            {/* Second Row - Two Videos and One Large Testimonial */}
+            <div className="grid grid-cols-12 gap-6 mb-6">
+              {/* Video 2 */}
+              <div className="col-span-12 md:col-span-6 lg:col-span-4 group">
+                <div className="bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-1 h-full">
+                  <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800">
+                    <iframe
+                      className="w-full h-full"
+                      src="https://www.youtube.com/embed/f-Dsn_yCKlA"
+                      title="Patient Testimonial 2"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                    <div className="absolute top-4 left-4">
+                      <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-red-600 text-white text-xs font-bold rounded-full shadow-lg">
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        Video
+                      </span>
+                    </div>
+                  </div>
+                  <div className="p-5">
+                    <h3 className="font-bold text-lg text-gray-900 mb-2">Heart Surgery Success</h3>
+                    <p className="text-sm text-gray-600">Life-changing treatment experience</p>
+                  </div>
+                </div>
               </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-1">Heart Surgery Success</h3>
-                <p className="text-sm text-gray-600">Life-changing treatment experience</p>
+
+              {/* Video 3 */}
+              <div className="col-span-12 md:col-span-6 lg:col-span-4 group">
+                <div className="bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-1 h-full">
+                  <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800">
+                    <iframe
+                      className="w-full h-full"
+                      src="https://www.youtube.com/embed/nmP2vSW_Kzk"
+                      title="Patient Testimonial 3"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                    <div className="absolute top-4 left-4">
+                      <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-red-600 text-white text-xs font-bold rounded-full shadow-lg">
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        Video
+                      </span>
+                    </div>
+                  </div>
+                  <div className="p-5">
+                    <h3 className="font-bold text-lg text-gray-900 mb-2">Expert Care</h3>
+                    <p className="text-sm text-gray-600">Compassionate medical team</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Large Testimonial Card */}
+              <div className="col-span-12 md:col-span-12 lg:col-span-4 group">
+                <div className="bg-gradient-to-br from-purple-50 via-white to-blue-50 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 border border-purple-100/50 transform hover:-translate-y-1 h-full flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
+                        <span className="text-white font-bold text-xl">AP</span>
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <h4 className="font-bold text-gray-900 text-lg">Amit Patel</h4>
+                          <span className="text-xs text-gray-500">• Ajmer</span>
+                        </div>
+                        <div className="flex items-center gap-1 mb-3">
+                          {[...Array(5)].map((_, i) => (
+                            <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                              <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                            </svg>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-gray-700 leading-relaxed text-base mb-4">
+                      &quot;Best cardiology hospital in Rajasthan. Advanced technology and expert doctors. Highly recommend for any heart-related issues.&quot;
+                    </p>
+                  </div>
+                  <span className="inline-block px-4 py-2 bg-gradient-to-r from-purple-100 to-blue-100 text-purple-700 rounded-full text-sm font-medium">
+                    Cardiac Consultation
+                  </span>
+                </div>
               </div>
             </div>
 
-            {/* Video 3 - Placeholder */}
-            <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border border-gray-200">
-              <div className="relative aspect-video bg-gray-900">
-                <iframe
-                  className="w-full h-full"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                  title="Patient Testimonial 3"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-1">Expert Care</h3>
-                <p className="text-sm text-gray-600">Compassionate medical team</p>
-              </div>
+            {/* Third Row - More Text Testimonials */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                { name: "Sunita Mehta", location: "Kota", initials: "SM", gradient: "from-green-500 to-emerald-500", bg: "from-green-50 to-emerald-50", border: "border-green-100", badge: "bg-green-100 text-green-700", text: "The multispeciality approach here is amazing. They treated my mother with such compassion and expertise. Thank you team!", treatment: "Multispeciality Care" },
+                { name: "Vikram Singh", location: "Udaipur", initials: "VS", gradient: "from-orange-500 to-amber-500", bg: "from-orange-50 to-amber-50", border: "border-orange-100", badge: "bg-orange-100 text-orange-700", text: "Outstanding facilities and professional care. The new Cath Lab is state-of-the-art. Very satisfied with the treatment.", treatment: "Cardiac Intervention" }
+              ].map((testimonial, idx) => (
+                <div key={idx} className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-1">
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className={`w-12 h-12 bg-gradient-to-br ${testimonial.gradient} rounded-full flex items-center justify-center flex-shrink-0 shadow-md`}>
+                      <span className="text-white font-bold text-lg">{testimonial.initials}</span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <h4 className="font-bold text-gray-900">{testimonial.name}</h4>
+                        <span className="text-xs text-gray-500">• {testimonial.location}</span>
+                      </div>
+                      <div className="flex items-center gap-1 mb-3">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                            <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                          </svg>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-gray-700 leading-relaxed mb-4">
+                    &quot;{testimonial.text}&quot;
+                  </p>
+                  <span className={`inline-block px-3 py-1 ${testimonial.badge} rounded-full text-xs font-medium`}>
+                    {testimonial.treatment}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Mobile Video Carousel - Visible only on Mobile */}
-          <div className="md:hidden relative mb-12">
+          {/* Mobile Layout - Carousel Mix */}
+          <div className="md:hidden relative">
             {/* Carousel Container */}
             <div className="overflow-hidden rounded-2xl">
               <div 
                 className="flex transition-transform duration-500 ease-in-out"
                 style={{ transform: `translateX(-${patientVideoIndex * 100}%)` }}
               >
-                {/* Video 1 */}
+                {/* Slide 1 - Video */}
                 <div className="min-w-full px-2">
-                  <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border border-gray-200">
-                    <div className="relative aspect-video bg-gray-900">
+                  <div className="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+                    <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800">
                       <iframe
                         className="w-full h-full"
-                        src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                        title="Patient Testimonial 1"
+                        src="https://www.youtube.com/embed/WAQhacSLIh4"
+                        title="Patient Success Story"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                       ></iframe>
+                      <div className="absolute top-4 left-4">
+                        <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-red-600 text-white text-xs font-bold rounded-full shadow-lg">
+                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                          </svg>
+                          Video Review
+                        </span>
+                      </div>
                     </div>
-                    <div className="p-4">
-                      <h3 className="font-semibold text-gray-900 mb-1">Success Story</h3>
-                      <p className="text-sm text-gray-600">Patient shares their recovery journey</p>
+                    <div className="p-5 bg-gradient-to-br from-white to-gray-50">
+                      <h3 className="font-bold text-lg text-gray-900 mb-2">Life-Saving Heart Surgery</h3>
+                      <p className="text-sm text-gray-600 mb-3">A patient shares their incredible recovery journey</p>
+                      <div className="flex items-center gap-2">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                            <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                          </svg>
+                        ))}
+                        <span className="text-xs text-gray-500">5.0 Rating</span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Video 2 */}
+                {/* Slide 2 - Text Testimonial */}
                 <div className="min-w-full px-2">
-                  <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border border-gray-200">
-                    <div className="relative aspect-video bg-gray-900">
+                  <div className="bg-gradient-to-br from-white to-blue-50/30 rounded-2xl p-6 shadow-xl border border-blue-100/50">
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg">
+                        <span className="text-white font-bold text-xl">RK</span>
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <h4 className="font-bold text-gray-900 text-lg">Rajesh Kumar</h4>
+                          <span className="text-xs text-gray-500">• Jaipur</span>
+                        </div>
+                        <div className="flex items-center gap-1 mb-3">
+                          {[...Array(5)].map((_, i) => (
+                            <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                              <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                            </svg>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-gray-700 leading-relaxed mb-4 text-base">
+                      &quot;Excellent care and treatment. The doctors are highly skilled and the staff is very caring. My heart condition was treated successfully.&quot;
+                    </p>
+                    <span className="inline-block px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
+                      Cardiac Surgery
+                    </span>
+                  </div>
+                </div>
+
+                {/* Slide 3 - Video */}
+                <div className="min-w-full px-2">
+                  <div className="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+                    <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800">
                       <iframe
                         className="w-full h-full"
-                        src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                        src="https://www.youtube.com/embed/f-Dsn_yCKlA"
                         title="Patient Testimonial 2"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                       ></iframe>
+                      <div className="absolute top-4 left-4">
+                        <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-red-600 text-white text-xs font-bold rounded-full shadow-lg">
+                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                          </svg>
+                          Video
+                        </span>
+                      </div>
                     </div>
-                    <div className="p-4">
-                      <h3 className="font-semibold text-gray-900 mb-1">Heart Surgery Success</h3>
+                    <div className="p-5">
+                      <h3 className="font-bold text-lg text-gray-900 mb-2">Heart Surgery Success</h3>
                       <p className="text-sm text-gray-600">Life-changing treatment experience</p>
                     </div>
                   </div>
                 </div>
 
-                {/* Video 3 */}
+                {/* Slide 4 - Video */}
                 <div className="min-w-full px-2">
-                  <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border border-gray-200">
-                    <div className="relative aspect-video bg-gray-900">
+                  <div className="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+                    <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-800">
                       <iframe
                         className="w-full h-full"
-                        src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                        src="https://www.youtube.com/embed/nmP2vSW_Kzk"
                         title="Patient Testimonial 3"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                       ></iframe>
+                      <div className="absolute top-4 left-4">
+                        <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-red-600 text-white text-xs font-bold rounded-full shadow-lg">
+                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                          </svg>
+                          Video
+                        </span>
+                      </div>
                     </div>
-                    <div className="p-4">
-                      <h3 className="font-semibold text-gray-900 mb-1">Expert Care</h3>
+                    <div className="p-5">
+                      <h3 className="font-bold text-lg text-gray-900 mb-2">Expert Care</h3>
                       <p className="text-sm text-gray-600">Compassionate medical team</p>
                     </div>
                   </div>
@@ -1647,18 +1970,18 @@ export default function Home() {
 
             {/* Mobile Navigation Buttons */}
             <button
-              onClick={() => setPatientVideoIndex((prev) => (prev === 0 ? 2 : prev - 1))}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-shadow border border-gray-200 z-10"
-              aria-label="Previous video"
+              onClick={() => setPatientVideoIndex((prev) => (prev === 0 ? 3 : prev - 1))}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white rounded-full p-3 shadow-xl hover:shadow-2xl transition-all border border-gray-200 z-10 hover:scale-110"
+              aria-label="Previous"
             >
               <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
             <button
-              onClick={() => setPatientVideoIndex((prev) => (prev === 2 ? 0 : prev + 1))}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-shadow border border-gray-200 z-10"
-              aria-label="Next video"
+              onClick={() => setPatientVideoIndex((prev) => (prev === 3 ? 0 : prev + 1))}
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white rounded-full p-3 shadow-xl hover:shadow-2xl transition-all border border-gray-200 z-10 hover:scale-110"
+              aria-label="Next"
             >
               <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -1667,25 +1990,17 @@ export default function Home() {
 
             {/* Mobile Carousel Indicators */}
             <div className="flex justify-center gap-2 mt-6">
-              {[0, 1, 2].map((index) => (
+              {[0, 1, 2, 3].map((index) => (
                 <button
                   key={index}
                   onClick={() => setPatientVideoIndex(index)}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    index === patientVideoIndex ? 'bg-blue-600 w-8' : 'bg-gray-300'
+                  className={`h-2 rounded-full transition-all ${
+                    index === patientVideoIndex ? 'bg-gradient-to-r from-blue-600 to-purple-600 w-8' : 'bg-gray-300 w-2'
                   }`}
-                  aria-label={`Go to video ${index + 1}`}
+                  aria-label={`Go to slide ${index + 1}`}
                 />
               ))}
             </div>
-          </div>
-
-          {/* Testimonial Cards Carousel */}
-          <div className="mb-8">
-            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center mb-8">
-              Patient Reviews
-            </h3>
-            <TestimonialCarousel />
           </div>
         </div>
       </section>
