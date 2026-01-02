@@ -19,13 +19,13 @@ export default function HeartScene() {
   }
 
   return (
-    <div className="relative w-full h-full group">
+    <div className="relative w-full h-full">
       <Image 
         src="/heart.png" 
         alt="Cardiac Care Illustration" 
         width={600} 
         height={600}
-        className="relative w-full h-full object-contain drop-shadow-2xl transform group-hover:scale-105 group-hover:rotate-[360deg] transition-all duration-1000 ease-in-out z-10"
+        className="relative w-full h-full object-contain drop-shadow-2xl z-10"
         priority
       />
     </div>
