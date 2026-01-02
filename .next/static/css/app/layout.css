@@ -673,6 +673,9 @@ video {
   margin-left: auto;
   margin-right: auto;
 }
+.-mt-2 {
+  margin-top: -0.5rem;
+}
 .mb-1 {
   margin-bottom: 0.25rem;
 }
@@ -1021,9 +1024,6 @@ video {
 }
 .gap-0 {
   gap: 0px;
-}
-.gap-0\.5 {
-  gap: 0.125rem;
 }
 .gap-1 {
   gap: 0.25rem;
@@ -1777,6 +1777,9 @@ video {
 }
 .pt-4 {
   padding-top: 1rem;
+}
+.pt-6 {
+  padding-top: 1.5rem;
 }
 .pt-8 {
   padding-top: 2rem;
@@ -2759,10 +2762,6 @@ body {
     margin-top: 1.5rem;
   }
 
-  .sm\:block {
-    display: block;
-  }
-
   .sm\:flex {
     display: flex;
   }
@@ -2979,6 +2978,10 @@ body {
   .sm\:py-8 {
     padding-top: 2rem;
     padding-bottom: 2rem;
+  }
+
+  .sm\:pt-0 {
+    padding-top: 0px;
   }
 
   .sm\:text-2xl {

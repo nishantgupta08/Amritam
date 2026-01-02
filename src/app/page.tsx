@@ -857,11 +857,11 @@ export default function Home() {
             {/* Left Side - Text Content */}
             <div className="space-y-8">
               {/* Main Heading */}
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight tracking-tight">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight tracking-tight pt-6 sm:pt-0">
                 <span className="text-gray-900">Advanced</span>
-                <br className="hidden sm:block" />
+                <br />
                 <span className="text-gray-900">Cardiac Care</span>
-                <br className="hidden sm:block" />
+                <br />
                 <span className="bg-gradient-to-r from-blue-700 via-blue-600 to-blue-800 bg-clip-text text-transparent">You Can Trust</span>
               </h1>
 
@@ -901,9 +901,9 @@ export default function Home() {
             </div>
 
             {/* Right Side - Heart Image */}
-            <div className="relative flex-shrink-0 w-full lg:w-auto flex flex-col items-center justify-center gap-0.5">
+            <div className="relative flex-shrink-0 w-full lg:w-auto flex flex-col items-center justify-center -mt-2">
               {/* Tagline with pink heart icon */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full border-2 border-white/30 shadow-lg backdrop-blur-sm">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full border-2 border-white/30 shadow-lg backdrop-blur-sm mb-2">
                 <svg className="w-4 h-4 text-white drop-shadow-sm" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                 </svg>
@@ -911,7 +911,7 @@ export default function Home() {
               </div>
               
               {/* Heart Image */}
-              <div className="relative w-full sm:w-96 h-96 sm:h-96 lg:w-[480px] lg:h-[480px] xl:w-[600px] xl:h-[600px] flex items-center justify-center">
+              <div className="relative w-full sm:w-96 h-96 sm:h-96 lg:w-[480px] lg:h-[480px] xl:w-[600px] xl:h-[600px] flex items-center justify-center -mt-2">
                 <div className="relative w-full h-full">
                   {/* Central Heart Image */}
                   <div className="relative z-10 w-full h-full flex items-center justify-center">
